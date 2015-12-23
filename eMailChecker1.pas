@@ -10,7 +10,9 @@ uses
   FMX.Controls.Presentation, FMX.StdCtrls, IdIOHandler, IdIOHandlerSocket,
   IdIOHandlerStack, IdSSL, IdSSLOpenSSL, IdIMAP4, FMX.Edit, FMX.ScrollBox,
   FMX.Memo, IdMessage, FMX.Layouts, IdText, FMX.TabControl, Data.DB,
-  Datasnap.DBClient, System.IOUtils, FMX.ListBox
+  Datasnap.DBClient, System.IOUtils, FMX.ListBox, FMX.ListView.Types,
+  FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView,
+  FMX.Objects //,MIDASLib // MIGHT NEED AFTER DELPHI 7 INSTALL.
   {$IFDEF ANDROID}
     ,Androidapi.JNI.Os,
     Androidapi.JNI.GraphicsContentViewText,
@@ -26,19 +28,26 @@ type
     Layout1: TLayout;
     Button1: TButton;
     ClientDataSet1: TClientDataSet;
-    lbxData: TListBox;
     lbxTop: TListBox;
+    lbxData: TListView;
+    imgGreenTick: TImage;
+    imgDiana: TImage;
+    imgCross: TImage;
+    imgREA: TImage;
+    imgRVW: TImage;
+    imgDOMAIN: TImage;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button2Click(Sender: TObject);
+    procedure refresListView;
   private
     sl: TstringList;
     var data_file: string;
     LAST_MESSAGE_ID: integer;
     function write_client_dataset_lastfound(_filter: string; _lastfound: TdateTime; _MessageNumber: integer): string;
     function read_client_dataset(_filter, _FieldName: string): string;
-    function read_hours_since_lastfound(_filter: string): string;
+    function read_hours_since_lastfound(_filter: string): double;
     function filter_dateset_on(_filter: string): integer;
   public
     { Public declarations }
@@ -46,6 +55,10 @@ type
 
 var
   frmEmailChecker: TfrmEmailChecker;
+
+const
+  sThumbNailName = 'TI';
+  sCaption = 'CA';
 
 implementation
 
@@ -59,6 +72,8 @@ var _CheckMessages: integer;
     _partType:string;
     _rawMessage: string;
     _progress: double;
+    _LItem: TListViewItem;
+    _ListItemImage: TListItemImage;
 begin
    write_client_dataset_lastfound('VERSION', Now, 0);
    IdPOP31.Connect;
@@ -90,18 +105,8 @@ begin
    ClientDataSet1.FieldByName('NUMBER').AsInteger:=  _MessageNumber;
    ClientDataSet1.Post;
    ClientDataSet1.SaveToFile(data_file);
-   lbxTop.Items.clear;
-   //lbxTop.Items.Add('Last ID: '+IntToStr(_MessageNumber));
-   lbxTop.Items.Add(read_client_dataset('VERSION','LAST_FOUND'));
-   lbxData.Items.Clear;
-   lbxData.Items.Add('REA: '+read_client_dataset('REA','LAST_FOUND'));
-   lbxData.Items.Add(read_hours_since_lastfound('REA'));
-   lbxData.Items.Add('DOMAIN: '+read_client_dataset('DOMAIN','LAST_FOUND'));
-   lbxData.Items.Add(read_hours_since_lastfound('DOMAIN'));
-   lbxData.Items.Add('RVW: '+read_client_dataset('RVW','LAST_FOUND'));
-   lbxData.Items.Add(read_hours_since_lastfound('RVW'));
-   lbxData.Items.Add('DIANA: '+read_client_dataset('DIANA','LAST_FOUND'));
-   lbxData.Items.Add(read_hours_since_lastfound('DIANA'));
+   refresListView;
+
 end;
 
 
@@ -126,14 +131,126 @@ begin
 end;
 
 
-function TfrmEmailChecker.read_hours_since_lastfound(_filter: string): string;
+function TfrmEmailChecker.read_hours_since_lastfound(_filter: string): double;
 var _LAST_FOUND: TDateTime;
     _Hours: double;
 begin
      filter_dateset_on(_filter);
      _LAST_FOUND:=  ClientDataSet1.FieldByName('LAST_FOUND').AsDateTime;
-     _Hours:= (now-_LAST_FOUND) *24;
-     Result:= format('%f hour ago',[_Hours]);
+     Result:= (now-_LAST_FOUND) *24;
+end;
+
+procedure TfrmEmailChecker.refresListView;
+var _LItem: TListViewItem;
+    _ListItemImage: TListItemImage;
+    _Image: TImage;
+    _HoursAgo_REA,_HoursAgo_DOMAIN,_HoursAgo_RVW: double;
+    H, M, S, MS: Word;
+begin
+    DecodeTime(Now, H, M, S, MS);
+    lbxTop.Items.clear;
+    lbxTop.Items.Add(read_client_dataset('VERSION','LAST_FOUND'));
+
+    lbxData.Items.Clear;
+   _LItem := lbxData.Items.Add;
+   _LItem.Text := 'REA: '+read_client_dataset('REA','LAST_FOUND');
+   _LItem.BitmapRef := imgREA.Bitmap;
+   _ListItemImage:=  (_LItem.Objects.FindDrawable(sThumbNailName) as TListItemImage);
+   if _ListItemImage <> Nil then begin
+      _ListItemImage.OwnsBitmap := False;
+      _ListItemImage.Bitmap := imgREA.Bitmap;
+   end;
+
+   _HoursAgo_REA:= read_hours_since_lastfound('REA');
+   _HoursAgo_DOMAIN:= read_hours_since_lastfound('DOMAIN');
+   _HoursAgo_RVW:= read_hours_since_lastfound('RVW');
+
+
+   _LItem := lbxData.Items.Add;
+   _LItem.Text :=format('%f hour ago',[_HoursAgo_REA]);
+   _Image:=  imgGreenTick;
+   if (_HoursAgo_RVW - _HoursAgo_REA) > 1   then begin
+     _Image:=  imgCross; //imgGreenTick;
+   end;
+   if (_HoursAgo_REA > 24)   then begin
+     _Image:=  imgCross; //imgGreenTick;
+   end;
+   if (_HoursAgo_REA > 4) and (H > 11) and ( H < 18)   then begin
+     _Image:=  imgCross; //imgGreenTick;
+   end;
+
+
+   _LItem.BitmapRef := _Image.Bitmap;
+   _ListItemImage:=  (_LItem.Objects.FindDrawable(sThumbNailName) as TListItemImage);
+   if _ListItemImage <> Nil then begin
+      _ListItemImage.OwnsBitmap := False;
+      _ListItemImage.Bitmap := _Image.Bitmap;
+   end;
+
+   _LItem := lbxData.Items.Add;
+   _LItem.Text := 'DOMAIN: '+read_client_dataset('DOMAIN','LAST_FOUND');
+   _LItem.BitmapRef := imgDOMAIN.Bitmap;
+   _ListItemImage:=  (_LItem.Objects.FindDrawable(sThumbNailName) as TListItemImage);
+   if _ListItemImage <> Nil then begin
+      _ListItemImage.OwnsBitmap := False;
+      _ListItemImage.Bitmap := imgDOMAIN.Bitmap;
+   end;
+   _Image:=  imgGreenTick;
+   if (_HoursAgo_DOMAIN > 24)   then begin
+     _Image:=  imgCross; //imgGreenTick;
+   end;
+   if (_HoursAgo_DOMAIN > 4) and (H > 11) and ( H < 18)   then begin
+     _Image:=  imgCross; //imgGreenTick;
+   end;
+   _LItem := lbxData.Items.Add;
+   _LItem.Text := format('%f hour ago',[_HoursAgo_DOMAIN]);
+   _LItem.BitmapRef := _Image.Bitmap;
+   _ListItemImage:=  (_LItem.Objects.FindDrawable(sThumbNailName) as TListItemImage);
+   if _ListItemImage <> Nil then begin
+      _ListItemImage.OwnsBitmap := False;
+      _ListItemImage.Bitmap := _Image.Bitmap;
+   end;
+
+   _LItem := lbxData.Items.Add;
+   _LItem.Text := 'RVW: '+read_client_dataset('RVW','LAST_FOUND');
+   _LItem.BitmapRef := imgRVW.Bitmap;
+   _ListItemImage:=  (_LItem.Objects.FindDrawable(sThumbNailName) as TListItemImage);
+   if _ListItemImage <> Nil then begin
+      _ListItemImage.OwnsBitmap := False;
+      _ListItemImage.Bitmap := imgRVW.Bitmap;
+   end;
+   _Image:=  imgGreenTick;
+   if (_HoursAgo_RVW > 24)   then begin
+     _Image:=  imgCross; //imgGreenTick;
+   end;
+   if (_HoursAgo_RVW > 4) and (H > 11) and ( H < 18)   then begin
+     _Image:=  imgCross; //imgGreenTick;
+   end;
+   _LItem := lbxData.Items.Add;
+   _LItem.Text :=format('%f hour ago',[_HoursAgo_RVW]);
+   _LItem.BitmapRef := _Image.Bitmap;
+   _ListItemImage:=  (_LItem.Objects.FindDrawable(sThumbNailName) as TListItemImage);
+   if _ListItemImage <> Nil then begin
+      _ListItemImage.OwnsBitmap := False;
+      _ListItemImage.Bitmap := _Image.Bitmap;
+   end;
+
+   _LItem := lbxData.Items.Add;
+   _LItem.Text :='______________________';
+
+   _LItem := lbxData.Items.Add;
+   _LItem.Text := 'DIANA: '+read_client_dataset('DIANA','LAST_FOUND');
+   _LItem.BitmapRef := imgDiana.Bitmap;
+   _ListItemImage:=  (_LItem.Objects.FindDrawable(sThumbNailName) as TListItemImage);
+   if _ListItemImage <> Nil then begin
+      _ListItemImage.OwnsBitmap := False;
+      _ListItemImage.Bitmap := imgDiana.Bitmap;
+   end;
+
+   _LItem := lbxData.Items.Add;
+   _LItem.Text :=format('%f hour ago',[read_hours_since_lastfound('DIANA')]);
+
+
 end;
 
 function TfrmEmailChecker.write_client_dataset_lastfound(_filter: string;
@@ -157,7 +274,7 @@ end;
 procedure TfrmEmailChecker.FormCreate(Sender: TObject);
 
 begin
-  data_file := TPath.Combine(TPath.GetDocumentsPath, 'data_email_checker');
+  data_file := System.IOUtils.TPath.Combine(System.IOUtils.TPath.GetDocumentsPath, 'data_email_checker');
  //DELETEfILE(data_file);
   if NOT fileExists(data_file) then BEGIN;
       ClientDataSet1.FieldDefs.Add('WHO', ftString, 255);
@@ -182,26 +299,8 @@ begin
    ClientDataSet1.Active := True;
    filter_dateset_on('LAST_MESSAGE_ID');
    LAST_MESSAGE_ID:= ClientDataSet1.FieldByName('NUMBER').AsInteger;
-   lbxTop.Items.clear;
-  // lbxTop.Items.Add('Last ID: '+IntToStr(LAST_MESSAGE_ID));
-   lbxTop.Items.Add(read_client_dataset('VERSION','LAST_FOUND'));
+   refresListView;
 
-   lbxData.Items.Add('REA: '+read_client_dataset('REA','LAST_FOUND'));
-   lbxData.Items.Add(read_hours_since_lastfound('REA'));
-   lbxData.Items.Add('DOMAIN: '+read_client_dataset('DOMAIN','LAST_FOUND'));
-   lbxData.Items.Add(read_hours_since_lastfound('DOMAIN'));
-   lbxData.Items.Add('RVW: '+read_client_dataset('RVW','LAST_FOUND'));
-   lbxData.Items.Add(read_hours_since_lastfound('RVW'));
-   lbxData.Items.Add('DIANA: '+read_client_dataset('DIANA','LAST_FOUND'));
-   lbxData.Items.Add(read_hours_since_lastfound('DIANA'));
-   //lbxData.Items.Add(data_file);
-
-
-//    Edit1.Text:= intToSTr( ClientDataSet1.RecordCount);   sl:= TstringList.Create;
-   //ClientDataSet1.Edit;
-  // ClientDataSet1.FieldByName('NUMBER').AsInteger:=  ClientDataSet1.FieldByName('NUMBER').AsInteger+1;
-   //ClientDataSet1.Post;
-  // ClientDataSet1.SaveToFile(data_file);
 end;
 
 procedure TfrmEmailChecker.FormDestroy(Sender: TObject);
