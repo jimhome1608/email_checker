@@ -28,7 +28,6 @@ type
     Layout1: TLayout;
     Button1: TButton;
     ClientDataSet1: TClientDataSet;
-    lbxTop: TListBox;
     lbxData: TListView;
     imgGreenTick: TImage;
     imgDiana: TImage;
@@ -36,6 +35,8 @@ type
     imgREA: TImage;
     imgRVW: TImage;
     imgDOMAIN: TImage;
+    Label1: TLabel;
+    imgClock: TImage;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -144,14 +145,24 @@ procedure TfrmEmailChecker.refresListView;
 var _LItem: TListViewItem;
     _ListItemImage: TListItemImage;
     _Image: TImage;
-    _HoursAgo_REA,_HoursAgo_DOMAIN,_HoursAgo_RVW: double;
+    _HoursAgo_REA,_HoursAgo_DOMAIN,_HoursAgo_RVW, _HoursAgo_VERSION: double;
     H, M, S, MS: Word;
 begin
     DecodeTime(Now, H, M, S, MS);
-    lbxTop.Items.clear;
-    lbxTop.Items.Add(read_client_dataset('VERSION','LAST_FOUND'));
+
+    _HoursAgo_VERSION:= read_hours_since_lastfound('VERSION');
 
     lbxData.Items.Clear;
+    _LItem := lbxData.Items.Add;
+   _LItem.Text := format('%f hour ago',[_HoursAgo_VERSION]);
+   _LItem.BitmapRef := imgClock.Bitmap;
+   _ListItemImage:=  (_LItem.Objects.FindDrawable(sThumbNailName) as TListItemImage);
+   if _ListItemImage <> Nil then begin
+      _ListItemImage.OwnsBitmap := False;
+      _ListItemImage.Bitmap := imgClock.Bitmap;
+   end;
+
+
    _LItem := lbxData.Items.Add;
    _LItem.Text := 'REA: '+read_client_dataset('REA','LAST_FOUND');
    _LItem.BitmapRef := imgREA.Bitmap;
@@ -169,7 +180,7 @@ begin
    _LItem := lbxData.Items.Add;
    _LItem.Text :=format('%f hour ago',[_HoursAgo_REA]);
    _Image:=  imgGreenTick;
-   if (_HoursAgo_RVW - _HoursAgo_REA) > 1   then begin
+   if (_HoursAgo_REA - _HoursAgo_RVW) > 1   then begin
      _Image:=  imgCross; //imgGreenTick;
    end;
    if (_HoursAgo_REA > 24)   then begin

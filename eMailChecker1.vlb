@@ -1,37 +1,46 @@
 ﻿[Button1]
-Coordinates=188,10,59,58
+Coordinates=188,10,53,51
 
 [IdMessage1]
-Coordinates=25,77,84,36
+Coordinates=25,77,72,33
 
 [ToolBar1]
-Coordinates=80,146,67,36
+Coordinates=80,146,58,33
 
 [Layout1]
-Coordinates=10,146,60,36
+Coordinates=10,146,53,33
 
 [IdPOP31]
-Coordinates=344,166,66,36
+Coordinates=344,166,56,33
 
 []
-Coordinates=305,221,91,36
+Coordinates=128,59,116,177
 Visible=True
 
 [lbxData]
-Coordinates=19,132,107,212
+Coordinates=19,132,89,177
 Visible=True
 
-[lbxTop]
-Coordinates=128,59,139,212
-
 [imgGreenTick]
-Coordinates=305,1,95,58
+Coordinates=305,1,83,51
 Visible=True
 
 [ClientDataSet1]
-Coordinates=0,0,101,58
+Coordinates=0,0,87,51
 
 [imgDiana]
-Coordinates=305,78,69,58
+Coordinates=305,78,60,51
 Visible=True
+
+[imgDOMAIN]
+Coordinates=282,148,74,51
+
+[imgREA]
+Coordinates=0,0,54,51
+
+[imgRVW]
+Coordinates=73,1,56,51
+
+[imgCross]
+Coordinates=282,218,61,51
 
