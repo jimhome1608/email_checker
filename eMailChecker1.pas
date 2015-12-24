@@ -36,7 +36,6 @@ type
     imgRVW: TImage;
     imgDOMAIN: TImage;
     Label1: TLabel;
-    imgClock: TImage;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -154,13 +153,7 @@ begin
 
     lbxData.Items.Clear;
     _LItem := lbxData.Items.Add;
-   _LItem.Text := format('%f hour ago',[_HoursAgo_VERSION]);
-   _LItem.BitmapRef := imgClock.Bitmap;
-   _ListItemImage:=  (_LItem.Objects.FindDrawable(sThumbNailName) as TListItemImage);
-   if _ListItemImage <> Nil then begin
-      _ListItemImage.OwnsBitmap := False;
-      _ListItemImage.Bitmap := imgClock.Bitmap;
-   end;
+   _LItem.Text := format('      Last check: %f hour ago',[_HoursAgo_VERSION]);
 
 
    _LItem := lbxData.Items.Add;
