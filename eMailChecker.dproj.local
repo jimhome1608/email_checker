@@ -2,9 +2,9 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2015/12/22 13:59:26.000.812,=C:\Users\jim\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
-    <Transaction>2015/12/22 14:02:09.000.822,C:\Users\jim\Documents\Embarcadero\Studio\Projects\Unit2.fmx=C:\Users\jim\Documents\Embarcadero\Studio\Projects\eMailChecker\eMailChecker1.fmx</Transaction>
-    <Transaction>2015/12/22 14:02:09.000.822,C:\Users\jim\Documents\Embarcadero\Studio\Projects\Unit2.pas=C:\Users\jim\Documents\Embarcadero\Studio\Projects\eMailChecker\eMailChecker1.pas</Transaction>
-    <Transaction>2015/12/22 14:02:17.000.766,C:\Users\jim\Documents\Embarcadero\Studio\Projects\Project3.dproj=C:\Users\jim\Documents\Embarcadero\Studio\Projects\eMailChecker\eMailChecker.dproj</Transaction>
+    <Transaction>2015/12/22 14:02:09.000.822,C:\Users\jim\Documents\Embarcadero\Studio\Projects\eMailChecker\eMailChecker1.fmx=C:\Users\jim\Documents\Embarcadero\Studio\Projects\Unit2.fmx</Transaction>
+    <Transaction>2015/12/22 14:02:09.000.822,C:\Users\jim\Documents\Embarcadero\Studio\Projects\eMailChecker\eMailChecker1.pas=C:\Users\jim\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2015/12/22 14:02:17.000.766,C:\Users\jim\Documents\Embarcadero\Studio\Projects\eMailChecker\eMailChecker.dproj=C:\Users\jim\Documents\Embarcadero\Studio\Projects\Project3.dproj</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
 		<NoProfile iOSSimulator="iPhone5" Android="07ce7413018294a9"/>

@@ -6,3 +6,8 @@
 *.dcu
 *.o
 *.vsr
+Android/
+Android/
+*.~34~
+*.~*
+*.exe
