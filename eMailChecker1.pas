@@ -12,7 +12,7 @@ uses
   FMX.Memo, IdMessage, FMX.Layouts, IdText, FMX.TabControl, Data.DB,
   Datasnap.DBClient, System.IOUtils, FMX.ListBox, FMX.ListView.Types,
   FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView,
-  FMX.Objects //,MIDASLib // MIGHT NEED AFTER DELPHI 7 INSTALL.
+  FMX.Objects ,MIDASLib // MIGHT NEED AFTER DELPHI 7 INSTALL.
   {$IFDEF ANDROID}
     ,Androidapi.JNI.Os,
     Androidapi.JNI.GraphicsContentViewText,
@@ -26,7 +26,7 @@ type
     IdMessage1: TIdMessage;
     ToolBar1: TToolBar;
     Layout1: TLayout;
-    Button1: TButton;
+    btnRefresh: TButton;
     ClientDataSet1: TClientDataSet;
     lbxData: TListView;
     imgGreenTick: TImage;
@@ -40,12 +40,14 @@ type
     Rectangle3: TRectangle;
     lblLastCheck: TLabel;
     imgArrow: TImage;
-    procedure Button1Click(Sender: TObject);
+    procedure btnRefreshClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure refresListView;
+    procedure FormActivate(Sender: TObject);
   private
+    onActivateDone: boolean;
     sl: TstringList;
     var data_file: string;
     LAST_MESSAGE_ID: integer;
@@ -69,7 +71,7 @@ implementation
 
 {$R *.fmx}
 
-procedure TfrmEmailChecker.Button1Click(Sender: TObject);
+procedure TfrmEmailChecker.btnRefreshClick(Sender: TObject);
 var _CheckMessages: integer;
     _MessageNumber: integer;
     _header: string;
@@ -303,9 +305,30 @@ begin
    ClientDataSet1.SetRange([_filter], [_filter]);
 end;
 
+procedure TfrmEmailChecker.FormActivate(Sender: TObject);
+begin
+    if onActivateDone then
+      exit;
+    onActivateDone:= True;
+
+    MessageDlg('Refresh XML Last sent now?', System.UITypes.TMsgDlgType.mtInformation,
+    [
+      System.UITypes.TMsgDlgBtn.mbYes,
+      System.UITypes.TMsgDlgBtn.mbNo
+    ], 0,
+    procedure(const AResult: System.UITypes.TModalResult)
+    begin
+      case AResult of
+        mrYES:
+          btnRefreshClick(Sender);
+      end;
+    end);
+end;
+
 procedure TfrmEmailChecker.FormCreate(Sender: TObject);
 
 begin
+  onActivateDone:= False;
   {$IFDEF ANDROID}
   lbxData.Scale.X:= 1;
   lbxData.Scale.Y:= 1;

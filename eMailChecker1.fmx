@@ -8,6 +8,7 @@ object frmEmailChecker: TfrmEmailChecker
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   DesignerMasterStyle = 0
@@ -23,15 +24,15 @@ object frmEmailChecker: TfrmEmailChecker
       Size.Height = 48.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
-      object Button1: TButton
+      object btnRefresh: TButton
         Align = Client
         Size.Width = 48.000000000000000000
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'refreshtoolbutton'
         TabOrder = 1
-        Text = 'Button1'
-        OnClick = Button1Click
+        Text = 'btnRefresh'
+        OnClick = btnRefreshClick
       end
     end
     object Rectangle1: TRectangle
@@ -73,7 +74,7 @@ object frmEmailChecker: TfrmEmailChecker
     Size.PlatformDefault = False
     TabOrder = 7
     StyleLookup = 'listviewstyle'
-    OnPullRefresh = Button1Click
+    OnPullRefresh = btnRefreshClick
     SearchAlwaysOnTop = False
     PullToRefresh = True
     ControlType = Platform

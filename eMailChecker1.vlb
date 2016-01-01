@@ -1,7 +1,4 @@
-﻿[Button1]
-Coordinates=188,10,59,58
-
-[IdMessage1]
+﻿[IdMessage1]
 Coordinates=25,77,84,36
 
 [ToolBar1]
@@ -40,4 +37,7 @@ Coordinates=0,0,61,58
 
 [imgCross]
 Coordinates=282,218,69,58
+
+[btnRefresh]
+Coordinates=188,10,59,58
 

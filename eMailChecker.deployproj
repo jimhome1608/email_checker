@@ -49,15 +49,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Images\Multilink36.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>eMailChecker\res\drawable-ldpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon36</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_426x320.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>eMailChecker\res\drawable-small\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
@@ -94,6 +85,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="Images\Multilink36.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>eMailChecker\res\drawable-ldpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon36</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_960x720.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>eMailChecker\res\drawable-xlarge\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
@@ -103,19 +103,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Images\Multilink72.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>eMailChecker\res\drawable-hdpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon72</DeployClass>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_426x320.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>eMailChecker\res\drawable-small\</RemoteDir>
+            <RemoteName>splash_image.png</RemoteName>
+            <DeployClass>Android_SplashImage426</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_426x320.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>eMailChecker\res\drawable-small\</RemoteDir>
-            <RemoteName>splash_image.png</RemoteName>
-            <DeployClass>Android_SplashImage426</DeployClass>
+        <DeployFile Include="Images\Multilink48.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>eMailChecker\res\drawable-mdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon48</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -185,6 +185,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="Images\Multilink144.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>eMailChecker\res\drawable-xxhdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon144</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="Android\Debug\libeMailChecker.so" Condition="'$(Config)'=='Debug'">
             <RemoteDir>eMailChecker\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libeMailChecker.so</RemoteName>
@@ -195,10 +204,10 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="Images\Multilink144.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>eMailChecker\res\drawable-xxhdpi\</RemoteDir>
+        <DeployFile Include="Images\Multilink96.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>eMailChecker\res\drawable-xhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon144</DeployClass>
+            <DeployClass>Android_LauncherIcon96</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -217,15 +226,6 @@
             <RemoteDir>eMailChecker\library\lib\armeabi\</RemoteDir>
             <RemoteName>libeMailChecker.so</RemoteName>
             <DeployClass>AndroidLibnativeArmeabiFile</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="Images\Multilink96.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>eMailChecker\res\drawable-xhdpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon96</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -303,6 +303,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="Images\Multilink72.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>eMailChecker\res\drawable-hdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon72</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="Android\Release\AndroidManifest.xml" Condition="'$(Config)'=='Release'">
             <RemoteDir>eMailChecker\</RemoteDir>
             <RemoteName>AndroidManifest.xml</RemoteName>
@@ -316,15 +325,6 @@
             <RemoteDir>eMailChecker\classes\</RemoteDir>
             <RemoteName>classes.dex</RemoteName>
             <DeployClass>AndroidClassesDexFile</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="Images\Multilink48.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>eMailChecker\res\drawable-mdpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon48</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
